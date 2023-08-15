@@ -15,8 +15,6 @@ export class SuperCurvyPath extends Path {
    */
   getPath(): string {
     const { width, height, start, end } = this.getSVGProportions();
-    
-    console.log(this.options.start)
 
     const startX = start.x > end.x ? width : 0;
     const startY = start.y > end.y ? height : 0;
