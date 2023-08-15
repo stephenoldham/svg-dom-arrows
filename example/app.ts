@@ -1,4 +1,4 @@
-import { LinePath, Path } from '../src';
+import { SuperCurvyPath, Path } from '../src';
 
 import { SVGNS } from '../src';
 import './styles.scss';
@@ -47,20 +47,20 @@ cases.map((item, idx) => {
   const e = document.querySelector(`.${item} .end`);
 
   arrows.push(
-    new LinePath({
+    new SuperCurvyPath({
       start: {
         element: s,
         position: {
-          top: 0.5,
-          left: 1,
+          top: 1,
+          left: 0.5,
         },
         markerId: '#marker1',
       },
       end: {
         element: e,
         position: {
-          top: 0.5,
-          left: 0,
+          top: 0,
+          left: 0.5,
         },
         markerId: '#marker1',
       },

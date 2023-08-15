@@ -1,7 +1,7 @@
 import { Path } from './Path';
 import { PathOptions, Point } from '@src/models';
 
-export class CurvyPath extends Path {
+export class SuperCurvyPath extends Path {
   constructor(options: PathOptions) {
     super(options);
   }
@@ -15,9 +15,7 @@ export class CurvyPath extends Path {
    */
   getPath(): string {
     const { width, height, start, end } = this.getSVGProportions();
-
-    console.log(this.options.start, this.options.end)
-
+    
     const startX = start.x > end.x ? width : 0;
     const startY = start.y > end.y ? height : 0;
     const endX = width - startX;
@@ -26,14 +24,25 @@ export class CurvyPath extends Path {
     const points = [
       { x: startX, y: startY },
 
-      ...[
-        { x: Math.abs(startX - (startX + endX) * 0.5), y: startY },
-        {
-          x: Math.abs(startX - (startX + endX) * 0.5),
-          y: Math.abs(startY - (startY + endY) * 0.5),
-        }, // center
-        { x: Math.abs(startX - (startX + endX) * 0.5), y: endY },
-      ],
+      ... (
+        width > height && startY < endY
+          ? [
+            { x: startX, y: Math.abs(startY - (startY + endY) * 0.5) },
+            {
+              x: Math.abs(startX - (startX + endX) * 0.5),
+              y: Math.abs(startY - (startY + endY) * 0.5) 
+            }, // center
+            { x: endX, y: Math.abs(startY - (startY + endY) * 0.5) }
+          ]
+          : [
+            { x: Math.abs(startX - (startX + endX) * 0.5), y: startY },
+            {
+              x: Math.abs(startX - (startX + endX) * 0.5),
+              y: Math.abs(startY - (startY + endY) * 0.5)
+            }, // center
+            { x: Math.abs(startX - (startX + endX) * 0.5), y: endY }
+          ]
+      ),
 
       { x: endX, y: endY },
     ];
