@@ -277,9 +277,9 @@ export abstract class Path {
         y: y2,
       },
       top:
-        y1 < y2 ? this.options.start.position.offsetY : this.options.end.position.offsetY,
+        y1 <= y2 ? this.options.start.position.offsetY : this.options.end.position.offsetY,
       left:
-        x1 < x2 ? this.options.start.position.offsetX : this.options.end.position.offsetX,
+        x1 <= x2 ? this.options.start.position.offsetX : this.options.end.position.offsetX,
     };
   }
 

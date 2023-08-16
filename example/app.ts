@@ -16,6 +16,7 @@ const cases = [
   'case-10',
   'case-11',
   'case-12',
+  'case-13',
 ];
 
 const createMarker = (): SVGMarkerElement => {

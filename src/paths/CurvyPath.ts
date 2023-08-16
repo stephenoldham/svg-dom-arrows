@@ -16,8 +16,6 @@ export class CurvyPath extends Path {
   getPath(): string {
     const { width, height, start, end } = this.getSVGProportions();
 
-    console.log(this.options.start, this.options.end)
-
     const startX = start.x > end.x ? width : 0;
     const startY = start.y > end.y ? height : 0;
     const endX = width - startX;
