@@ -21,8 +21,8 @@ export class SuperCurvyPath extends Path {
     const endX = width - startX;
     const endY = height - startY;
 
-    console.log(startX, startY, endX, endY)
-    console.log(this.options.start, this.options.end)
+    // console.log(startX, startY, endX, endY)
+    // console.log(this.options.start, this.options.end)
 
     let points = [
       { x: startX, y: startY },
@@ -82,8 +82,6 @@ export class SuperCurvyPath extends Path {
   }
 
   svgPath(points: Point[]): string {
-    console.log(points)
-
     return points.length > 5
       ? `
         M ${points[0].x},${points[0].y}
