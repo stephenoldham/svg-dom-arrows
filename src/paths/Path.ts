@@ -243,10 +243,10 @@ export abstract class Path {
       const offsetYAppended = this.options.appendTo.getBoundingClientRect().y;
       const offsetXAppended = this.options.appendTo.getBoundingClientRect().x;
 
-      console.log(offsetYAppended, offsetXAppended)
+      // console.log(offsetYAppended, offsetXAppended)
 
-      this.containerDiv.style.top = `${top - offsetYAppended}px`;
-      this.containerDiv.style.left = `${left - offsetXAppended}px`;
+      this.containerDiv.style.top = `${top}px`;
+      this.containerDiv.style.left = `${left}px`;
     } else {
       // Take into account the window.page(X|Y)Offset to avoid weird scroll issues
       this.containerDiv.style.top = `${top + window.pageYOffset}px`;
