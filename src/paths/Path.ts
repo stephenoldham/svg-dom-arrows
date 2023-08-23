@@ -242,6 +242,9 @@ export abstract class Path {
     if (this.options.appendTo && this.options.appendTo !== document.body) {
       const offsetYAppended = this.options.appendTo.getBoundingClientRect().y;
       const offsetXAppended = this.options.appendTo.getBoundingClientRect().x;
+
+      console.log(offsetYAppended, offsetXAppended)
+
       this.containerDiv.style.top = `${top - offsetYAppended}px`;
       this.containerDiv.style.left = `${left - offsetXAppended}px`;
     } else {
