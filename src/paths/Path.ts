@@ -294,7 +294,7 @@ export abstract class Path {
       const offsetYAppended = rect.y;
       const offsetXAppended = rect.x;
 
-      console.log(offsetYAppended, offsetXAppended)
+      // console.log(offsetYAppended, offsetXAppended)
 
       this.containerDiv.style.top = `${top - offsetYAppended}px`;
       this.containerDiv.style.left = `${left - offsetXAppended}px`;
