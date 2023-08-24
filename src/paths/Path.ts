@@ -147,8 +147,8 @@ export abstract class Path {
    * Redraws the SVG path by recalculating the positions of the div container
    */
   public redraw(): void {
-    this.startBbox = this.options.start.element.getBoundingClientRect();
-    this.endBbox = this.options.end.element.getBoundingClientRect();
+    this.startBbox = this.getRectWithNullifiedTransforms(this.options.start.element);//.getBoundingClientRect();
+    this.endBbox = this.getRectWithNullifiedTransforms(this.options.end.element)//.getBoundingClientRect();
 
     /**
      * Offsets play a big role in knowing from where the path will effectively start and
@@ -216,39 +216,53 @@ export abstract class Path {
     this.svgElement.setAttribute('height', `${height}`);
   }
 
-  adjustedBoundingRect(el) {
-    var rect = el.getBoundingClientRect();
-    var style = getComputedStyle(el);
-    var tx = style.transform;
+  getRectWithNullifiedTransforms(el) {
+    const parseTransform = (el) =>
+      window
+        .getComputedStyle(el)
+        .transform.split(/\(|,|\)/)
+        .slice(1, -1)
+        .map((v) => parseFloat(v));
   
-    if (tx) {
-      var sx, sy, dx, dy;
-      if (tx.startsWith('matrix3d(')) {
-        var ta = tx.slice(9,-1).split(/, /);
-        sx = +ta[0];
-        sy = +ta[5];
-        dx = +ta[12];
-        dy = +ta[13];
-      } else if (tx.startsWith('matrix(')) {
-        var ta = tx.slice(7,-1).split(/, /);
-        sx = +ta[0];
-        sy = +ta[3];
-        dx = +ta[4];
-        dy = +ta[5];
-      } else {
-        return rect;
-      }
+    // 1
+    let { top, left, width, height } = el.getBoundingClientRect();
+    let transformArr = parseTransform(el);
+    let bounds;
   
-      var to = style.transformOrigin;
-      var x = rect.x - dx - (1 - sx) * parseFloat(to);
-      var y = rect.y - dy - (1 - sy) * parseFloat(to.slice(to.indexOf(' ') + 1));
-      var w = sx ? rect.width / sx : el.offsetWidth;
-      var h = sy ? rect.height / sy : el.offsetHeight;
-      return {
-        x: x, y: y, width: w, height: h, top: y, right: x + w, bottom: y + h, left: x
+    if (transformArr.length == 6) {
+      // 2D matrix
+      const t = transformArr;
+  
+      // 2
+      let det = t[0] * t[3] - t[1] * t[2];
+  
+      // 3
+      bounds = {
+        width: width / t[0],
+        height: height / t[3],
+        left: (left * t[3] - top * t[2] + t[2] * t[5] - t[4] * t[3]) / det,
+        top: (-left * t[1] + top * t[0] + t[4] * t[1] - t[0] * t[5]) / det,
       };
     } else {
-      return rect;
+      // This case is not handled because it's very rarely needed anyway.
+      // We just return the tranformed metrics, as they are, for consistency.
+      bounds = { top, left, width, height };
+    }
+
+    bounds = {
+      top: bounds.top,
+      right: bounds.left + bounds.width,
+      bottom: bounds.top + bounds.height,
+      left: bounds.left,
+      width: bounds.width,
+      height: bounds.height,
+      x: bounds.left,
+      y: bounds.top,
+    }
+
+    return {
+      ...bounds,
+      toJson: () => bounds,
     }
   }
 
@@ -276,7 +290,7 @@ export abstract class Path {
 
     // Take into account the appendTo element's offset for correct positioning
     if (this.options.appendTo && this.options.appendTo !== document.body) {
-      const rect = this.adjustedBoundingRect(this.options.appendTo);
+      const rect = this.options.appendTo.getBoundingClientRect();
       const offsetYAppended = rect.y;
       const offsetXAppended = rect.x;
 
