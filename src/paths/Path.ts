@@ -52,6 +52,9 @@ export abstract class Path {
     this.startBbox = this.options.start.element.getBoundingClientRect();
     this.endBbox = this.options.end.element.getBoundingClientRect();
 
+    // this.startBbox = this.getRectWithNullifiedTransforms(this.options.start.element)
+    // this.endBbox = this.getRectWithNullifiedTransforms(this.options.end.element)
+
     // Default to 0,0 if no position is specified
     if (!options.start.position) {
       this.options.start.position = { top: 0, left: 0 };
@@ -147,8 +150,11 @@ export abstract class Path {
    * Redraws the SVG path by recalculating the positions of the div container
    */
   public redraw(): void {
-    this.startBbox = this.getRectWithNullifiedTransforms(this.options.start.element);//.getBoundingClientRect();
-    this.endBbox = this.getRectWithNullifiedTransforms(this.options.end.element)//.getBoundingClientRect();
+    // this.startBbox = this.getRectWithNullifiedTransforms(this.options.start.element)
+    // this.endBbox = this.getRectWithNullifiedTransforms(this.options.end.element)
+
+    this.startBbox = this.options.start.element.getBoundingClientRect();
+    this.endBbox = this.options.end.element.getBoundingClientRect();
 
     /**
      * Offsets play a big role in knowing from where the path will effectively start and
@@ -228,7 +234,7 @@ export abstract class Path {
     let { top, left, width, height } = el.getBoundingClientRect();
     let transformArr = parseTransform(el);
     let bounds;
-  
+
     if (transformArr.length == 6) {
       // 2D matrix
       const t = transformArr;
@@ -290,11 +296,10 @@ export abstract class Path {
 
     // Take into account the appendTo element's offset for correct positioning
     if (this.options.appendTo && this.options.appendTo !== document.body) {
-      const rect = this.getRectWithNullifiedTransforms(this.options.appendTo);
+      // const rect = this.getRectWithNullifiedTransforms(this.options.appendTo);
+      const rect = this.options.appendTo.getBoundingClientRect();
       const offsetYAppended = rect.y;
       const offsetXAppended = rect.x;
-
-      // console.log(offsetYAppended, offsetXAppended)
 
       this.containerDiv.style.top = `${top - offsetYAppended}px`;
       this.containerDiv.style.left = `${left - offsetXAppended}px`;

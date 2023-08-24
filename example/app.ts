@@ -67,6 +67,7 @@ cases.map((item, idx) => {
       },
       style: 'stroke:white;stroke-width:4;fill:transparent',
       appendTo: document.body,
+      // appendTo: document.querySelector(`#app`),
       markers: [createMarker()],
       customClass: {
         container: `container-${idx} foo bar`,

@@ -7,9 +7,13 @@ body {
 #app {
     position: relative;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-content: center;
+    width: 10000px;
+    height: 10000px;
+    margin-top:700px;
+    transform:matrix(.5, 0, 0, .5, 0, 0);
+    transform-origin: -100px -100px;
 }
 
 .block {
@@ -37,7 +41,6 @@ body {
         display: block;
         position: absolute;
         opacity: .5;
-        transform:scale(.5) translate(-50px)
     }
 
     .start {
