@@ -290,7 +290,7 @@ export abstract class Path {
 
     // Take into account the appendTo element's offset for correct positioning
     if (this.options.appendTo && this.options.appendTo !== document.body) {
-      const rect = this.options.appendTo.getBoundingClientRect();
+      const rect = this.getRectWithNullifiedTransforms(this.options.appendTo);
       const offsetYAppended = rect.y;
       const offsetXAppended = rect.x;
 
